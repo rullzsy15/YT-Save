@@ -2,6 +2,10 @@
 
 A modern, fast, and beautiful web application for downloading YouTube videos (MP4) and audio (MP3) in the highest available quality. Built with Next.js and powered by [yt-dlp](https://github.com/yt-dlp/yt-dlp).
 
+## Screenshot
+
+![YT-Save Screenshot](https://i.imgur.com/AREZ0Il.png)
+
 ## Features
 
 - **Download Videos** - Save YouTube videos in MP4 format with resolutions up to 4K
@@ -265,3 +269,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Disclaimer
 
 This project is for educational purposes only. Please respect YouTube's Terms of Service and copyright laws in your country. Only download content you have permission to download.
+
+---
+
+Made with by [YOUR_USERNAME](https://github.com/YOUR_USERNAME)
