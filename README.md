@@ -1,189 +1,271 @@
-# YouTube Downloader
+# YT-Save - YouTube Video & Audio Downloader
 
-A full-stack YouTube video downloader built with Next.js 14+, TypeScript, Tailwind CSS, and shadcn/ui.
+A modern, fast, and beautiful web application for downloading YouTube videos (MP4) and audio (MP3) in the highest available quality. Built with Next.js and powered by [yt-dlp](https://github.com/yt-dlp/yt-dlp).
 
 ## Features
 
-- Download YouTube videos in MP4 format (up to 4K resolution)
-- Extract audio as MP3 (up to 320kbps)
-- Support for 1080p60fps and 4K videos
-- Real-time download progress tracking
-- Clean, modern UI with custom fonts (Clash Display + Satoshi)
-- Responsive design for mobile and desktop
-- Download history tracking with MySQL database
+- **Download Videos** - Save YouTube videos in MP4 format with resolutions up to 4K
+- **Download Audio** - Extract audio from YouTube videos and save as MP3
+- **Multiple Quality Options** - Choose from various resolutions (360p, 480p, 720p, 1080p, 1440p, 4K) and bitrates
+- **Real-time Progress Tracking** - Visual progress indicator during download
+- **Video Preview** - See video title, thumbnail, channel info, duration, and view count before downloading
+- **Modern UI** - Clean, responsive interface built with Tailwind CSS and Framer Motion animations
+- **Dark/Light Theme** - Support for both light and dark modes
+- **Auto Cleanup** - Temporary downloaded files are automatically removed after 15 minutes
 
 ## Tech Stack
 
-- **Frontend**: Next.js 14+ (App Router), TypeScript, Tailwind CSS, shadcn/ui, Framer Motion
-- **Backend**: Next.js API Routes
-- **Database**: MySQL with Prisma ORM
-- **Video Processing**: yt-dlp + ffmpeg
+| Layer | Technology |
+|-------|-----------|
+| **Framework** | [Next.js 14](https://nextjs.org/) (App Router) |
+| **Language** | [TypeScript](https://www.typescriptlang.org/) |
+| **UI Framework** | [Tailwind CSS](https://tailwindcss.com/) |
+| **Animations** | [Framer Motion](https://www.framer.com/motion/) |
+| **Icons** | [Lucide React](https://lucide.dev/) |
+| **UI Components** | [Radix UI](https://www.radix-ui.com/) |
+| **Video Processing** | [yt-dlp](https://github.com/yt-dlp/yt-dlp) |
+| **Validation** | [Zod](https://zod.dev/) |
 
 ## Prerequisites
 
-Before running this project, make sure you have:
+Before running this project, make sure you have the following installed:
 
-1. **Node.js** 18+ installed
-2. **MySQL** server running (default: `root` user, no password)
-3. **yt-dlp** installed and available in PATH
-   - Windows: `pip install yt-dlp` or download from [GitHub](https://github.com/yt-dlp/yt-dlp/releases)
-   - macOS: `brew install yt-dlp`
-   - Linux: `pip install yt-dlp` or use your package manager
-4. **ffmpeg** installed and available in PATH
-   - Windows: Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to PATH
-   - macOS: `brew install ffmpeg`
-   - Linux: `sudo apt install ffmpeg` (Ubuntu/Debian) or `sudo yum install ffmpeg` (RHEL/CentOS)
+| Software | Minimum Version | Purpose |
+|----------|----------------|---------|
+| [Node.js](https://nodejs.org/) | 18.x or higher | JavaScript runtime |
+| [yt-dlp](https://github.com/yt-dlp/yt-dlp) | Latest | YouTube video/audio extraction |
+| [FFmpeg](https://ffmpeg.org/) | Latest | Audio/video merging & format conversion |
+| [npm](https://www.npmjs.com/) / [pnpm](https://pnpm.io/) / [yarn](https://yarnpkg.com/) | Latest | Package manager |
+
+> **Important:** `yt-dlp` and `FFmpeg` are **required** for the download functionality to work. They are NOT installed via npm - they must be installed system-wide.
 
 ## Installation
 
-1. **Clone or download the project**
+### 1. Clone the Repository
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+```bash
+git clone https://github.com/YOUR_USERNAME/YT-Save.git
+cd YT-Save
+```
 
-3. **Set up the database**
-   ```bash
-   # Create MySQL database
-   mysql -u root -e "CREATE DATABASE yt_downloader;"
-   
-   # Run Prisma migrations
-   npx prisma migrate dev
-   ```
+### 2. Install Node.js Dependencies
 
-4. **Configure environment variables**
-   ```bash
-   # Copy .env.example to .env.local
-   cp .env.example .env.local
-   
-   # Edit .env.local with your settings (database URL, paths, etc.)
-   ```
+```bash
+# Using npm
+npm install
 
-5. **Start the development server**
-   ```bash
-   npm run dev
-   ```
+# Using pnpm
+pnpm install
 
-6. **Open [http://localhost:3000](http://localhost:3000) in your browser**
+# Using yarn
+yarn install
+```
+
+### 3. Install System Dependencies
+
+#### yt-dlp
+
+**Windows:**
+```bash
+# Using Chocolatey
+choco install yt-dlp
+
+# Or download directly from https://github.com/yt-dlp/yt-dlp/releases
+# Download yt-dlp.exe and place it in your PATH (e.g., C:\Windows\)
+```
+
+**macOS:**
+```bash
+# Using Homebrew
+brew install yt-dlp
+```
+
+**Linux:**
+```bash
+# Ubuntu/Debian
+sudo apt update && sudo apt install yt-dlp
+
+# Fedora
+sudo dnf install yt-dlp
+
+# Arch Linux
+sudo pacman -S yt-dlp
+
+# Or install via pip
+pip install yt-dlp
+```
+
+#### FFmpeg
+
+**Windows:**
+```bash
+# Using Chocolatey
+choco install ffmpeg
+
+# Or download from https://ffmpeg.org/download.html
+# Extract and add the bin folder to your system PATH
+```
+
+**macOS:**
+```bash
+brew install ffmpeg
+```
+
+**Linux:**
+```bash
+# Ubuntu/Debian
+sudo apt install ffmpeg
+
+# Fedora
+sudo dnf install ffmpeg
+
+# Arch Linux
+sudo pacman -S ffmpeg
+```
+
+> **Verify installation:** After installing, verify both tools are available by running:
+> ```bash
+> yt-dlp --version
+> ffmpeg -version
+> ```
+
+## Running the Project
+
+### Development Mode
+
+Run the local development server with hot-reload:
+
+```bash
+npm run dev
+# or
+pnpm dev
+# or
+yarn dev
+```
+
+Then open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Production Build
+
+Build the application for production:
+
+```bash
+npm run build
+# or
+pnpm build
+# or
+yarn build
+```
+
+Start the production server:
+
+```bash
+npm start
+# or
+pnpm start
+# or
+yarn start
+```
+
+The production server will be available at [http://localhost:3000](http://localhost:3000).
+
+### Linting
+
+Check code quality:
+
+```bash
+npm run lint
+# or
+pnpm lint
+# or
+yarn lint
+```
 
 ## Project Structure
 
 ```
-yt-downloader-app/
-├── app/
-│   ├── page.tsx                # Main landing page
-│   ├── api/
-│   │   ├── metadata/route.ts   # Fetch video metadata
-│   │   └── download/route.ts   # Process download
-├── components/
-│   ├── SearchBar.tsx           # URL input component
-│   ├── PreviewCard.tsx         # Video preview card
-│   ├── QualitySelector.tsx     # Format/quality selector
-│   ├── ProgressIndicator.tsx   # Download progress
-│   └── ui/                     # shadcn/ui components
-├── lib/
-│   ├── utils.ts                # Utility functions
-│   └── youtube.ts              # YouTube/yt-dlp wrapper
-├── prisma/
-│   └── schema.prisma           # Database schema
-└── public/                     # Static assets
+YT-Save/
+├── src/
+│   ├── app/
+│   │   ├── api/                    # API Routes
+│   │   │   ├── download/           # Download endpoint with progress tracking
+│   │   │   ├── file/               # File serving endpoint
+│   │   │   └── metadata/           # Video metadata fetch endpoint
+│   │   ├── terms/                  # Terms of Service page
+│   │   ├── layout.tsx              # Root layout
+│   │   ├── page.tsx                # Main page (home)
+│   │   ├── globals.css             # Global styles (Tailwind)
+│   │   └── favicon.ico
+│   ├── components/
+│   │   ├── ui/                     # Shadcn/Radix UI primitive components
+│   │   │   ├── button.tsx
+│   │   │   ├── card.tsx
+│   │   │   ├── input.tsx
+│   │   │   ├── progress.tsx
+│   │   │   ├── select.tsx
+│   │   │   └── tabs.tsx
+│   │   ├── Navbar.tsx              # Navigation bar
+│   │   ├── NavbarTerms.tsx         # Terms page navigation bar
+│   │   ├── PreviewCard.tsx         # Video info & thumbnail display
+│   │   ├── ProgressIndicator.tsx   # Download progress display
+│   │   ├── QualitySelector.tsx     # Resolution/format selection
+│   │   └── SearchBar.tsx           # YouTube URL input
+│   └── lib/
+│       ├── youtube.ts              # Core yt-dlp integration
+│       ├── format.ts               # File size formatting
+│       └── utils.ts                # Utility functions
+├── public/                         # Static assets
+├── package.json
+├── tailwind.config.mjs             # Tailwind CSS configuration
+├── next.config.mjs                 # Next.js configuration
+├── tsconfig.json                   # TypeScript configuration
+└── README.md
 ```
 
-## API Routes
+## How It Works
 
-### `POST /api/metadata`
+1. **Search** - Paste a YouTube URL into the search bar
+2. **Fetch Metadata** - The app queries `yt-dlp` to get video info (title, thumbnail, available formats)
+3. **Choose Quality** - Select the desired video resolution or audio bitrate
+4. **Download** - The backend uses `yt-dlp` to download and process the file
+5. **Auto Download** - When complete, the file is automatically downloaded to your device
 
-Fetches video metadata from a YouTube URL.
+## API Endpoints
 
-**Request body:**
-```json
-{
-  "url": "https://www.youtube.com/watch?v=VIDEO_ID"
-}
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/metadata` | Fetch video metadata from a YouTube URL |
+| POST | `/api/download` | Start a download task |
+| GET | `/api/download?id=<id>` | Poll download progress |
+| GET | `/api/file/<filename>` | Download the finished file |
+
+## Environment Variables (Optional)
+
+You can create a `.env.local` file in the root directory:
+
+```env
+# Optional: Custom path to yt-dlp binary if it's not in system PATH
+# YT_DLP_PATH=/usr/local/bin/yt-dlp
 ```
 
-**Response:**
-```json
-{
-  "metadata": {
-    "id": "VIDEO_ID",
-    "title": "Video Title",
-    "channel": "Channel Name",
-    "thumbnail": "https://...",
-    "duration": 123,
-    "formats": [...]
-  }
-}
-```
+## Built With
 
-### `POST /api/download`
-
-Starts a video download.
-
-**Request body:**
-```json
-{
-  "videoId": "VIDEO_ID",
-  "formatId": "FORMAT_ID",
-  "type": "video",
-  "quality": "1080p60"
-}
-```
-
-**Response:**
-```json
-{
-  "downloadId": "DOWNLOAD_ID",
-  "message": "Download started"
-}
-```
-
-## Database Schema
-
-### DownloadHistory
-
-Stores download history for analytics and user reference.
-
-| Field | Type | Description |
-|-------|------|-------------|
-| id | Int | Primary key |
-| youtubeUrl | String | Original YouTube URL |
-| videoId | String | YouTube video ID |
-| title | String | Video title |
-| channel | String | Channel name |
-| thumbnail | String | Thumbnail URL |
-| duration | Int | Duration in seconds |
-| type | String | "video" or "audio" |
-| quality | String | Resolution/bitrate |
-| fileSizeMB | Float | File size in MB |
-| status | String | pending/processing/done/failed |
-| createdAt | DateTime | Download timestamp |
-
-### VideoQualityCache
-
-Caches available formats for each video.
-
-| Field | Type | Description |
-|-------|------|-------------|
-| id | Int | Primary key |
-| videoId | String | YouTube video ID |
-| formatId | String | yt-dlp format ID |
-| resolution | String | Resolution string |
-| fps | Int | Frame rate |
-| ext | String | File extension |
-| hasAudio | Boolean | Has audio stream |
-| filesizeMB | Float | File size in MB |
-
-## Legal Disclaimer
-
-This tool is for personal use only. Users are responsible for respecting:
-- Copyright laws
-- YouTube's Terms of Service
-- Content creator's rights
-
-Do not distribute downloaded content without permission.
+- **Next.js** - React full-stack framework
+- **Tailwind CSS** - Utility-first CSS framework
+- **yt-dlp** - Superior YouTube downloader
+- **Framer Motion** - Animation library
+- **Radix UI** - Accessible component primitives
+- **Lucide Icons** - Beautiful icon library
+- **TypeScript** - Type-safe JavaScript
 
 ## License
 
-MIT License - See LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Disclaimer
+
+This project is for educational purposes only. Please respect YouTube's Terms of Service and copyright laws in your country. Only download content you have permission to download.
+
+---
+
+Made with by [YOUR_USERNAME](https://github.com/YOUR_USERNAME)
