@@ -265,7 +265,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Disclaimer
 
 This project is for educational purposes only. Please respect YouTube's Terms of Service and copyright laws in your country. Only download content you have permission to download.
-
----
-
-Made with by [YOUR_USERNAME](https://github.com/YOUR_USERNAME)
