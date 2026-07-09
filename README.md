@@ -44,7 +44,7 @@ Before running this project, make sure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YT-Save.git
+git clone https://github.com/rullzsy15/YT-Save.git
 cd YT-Save
 ```
 
